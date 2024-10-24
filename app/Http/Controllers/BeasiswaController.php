@@ -33,8 +33,11 @@ class BeasiswaController extends Controller
 
         // Jika ada berkas yang diupload
         $filePath = null;
+        $savedFileName = null;
         if ($request->hasFile('berkas')) {
-            $filePath = $request->file('berkas')->store('berkas');
+            // ini untuk mendapatkan original filename
+            $savedFileName = $request->file('berkas')->getClientOriginalName();
+            $filePath = $request->file('berkas')->storeAs('public/berkas', $savedFileName);
         }
 
         // Menyimpan data pendaftaran
@@ -45,7 +48,7 @@ class BeasiswaController extends Controller
             'semester' => $request->semester,
             'ipk' => 3.4, // IPK default
             'beasiswa' => $request->ipk >= 3 ? $request->beasiswa : null, // Pilih beasiswa hanya jika IPK >= 3
-            'berkas' => $filePath,
+            'berkas' => $savedFileName,
             'status_ajuan' => 'belum diverifikasi', // Status default
         ]);
 

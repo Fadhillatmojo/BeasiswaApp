@@ -10,29 +10,43 @@
         <div class="card-body">
             <form action="{{ route('beasiswa.daftar') }}" method="POST" enctype="multipart/form-data">
                 @csrf
+
                 <div class="mb-3">
                     <label for="nama" class="form-label">Masukkan Nama</label>
-                    <input type="text" name="nama" class="form-control" required>
+                    <input type="text" name="nama" class="form-control @error('nama') is-invalid @enderror" required>
+                    @error('nama')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div class="mb-3">
                     <label for="email" class="form-label">Masukkan Email</label>
-                    <input type="email" name="email" class="form-control" required>
+                    <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" required>
+                    @error('email')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div class="mb-3">
                     <label for="nomor_hp" class="form-label">Nomor HP</label>
-                    <input type="text" name="nomor_hp" class="form-control" required>
+                    <input type="text" name="nomor_hp" class="form-control @error('nomor_hp') is-invalid @enderror"
+                        required>
+                    @error('nomor_hp')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div class="mb-3">
                     <label for="semester" class="form-label">Semester Saat Ini</label>
-                    <select name="semester" class="form-control" required>
+                    <select name="semester" class="form-control @error('semester') is-invalid @enderror" required>
                         <option value="">Pilih</option>
                         @for ($i = 1; $i <= 8; $i++)
                             <option value="{{ $i }}">{{ $i }}</option>
                         @endfor
                     </select>
+                    @error('semester')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div class="mb-3">
@@ -42,16 +56,23 @@
 
                 <div class="mb-3">
                     <label for="beasiswa" class="form-label">Pilihan Beasiswa</label>
-                    <select name="beasiswa" class="form-control" required>
+                    <select name="beasiswa" class="form-control @error('beasiswa') is-invalid @enderror" required>
                         <option value="">Pilih Beasiswa</option>
                         <option value="Akademik">Beasiswa Akademik</option>
                         <option value="Non-Akademik">Beasiswa Non-Akademik</option>
                     </select>
+                    @error('beasiswa')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div class="mb-3">
                     <label for="berkas" class="form-label">Upload Berkas Syarat</label>
-                    <input type="file" name="berkas" class="form-control" required>
+                    <input type="file" name="berkas" class="form-control @error('berkas') is-invalid @enderror"
+                        required>
+                    @error('berkas')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <button type="submit" class="btn btn-primary">Daftar</button>
@@ -62,7 +83,6 @@
 @endsection
 
 @section('script')
-    <!-- Script untuk validasi IPK dan menonaktifkan elemen -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const ipkInput = document.querySelector('input[name="ipk"]');
@@ -72,20 +92,17 @@
 
             const checkIPK = () => {
                 const ipkValue = parseFloat(ipkInput.value);
-                // Jika IPK di bawah 3, nonaktifkan pilihan beasiswa, berkas, dan tombol daftar
                 if (ipkValue < 3) {
                     beasiswaSelect.disabled = true;
                     berkasInput.disabled = true;
                     daftarButton.disabled = true;
                 } else {
-                    // Jika IPK >= 3, aktifkan semuanya
                     beasiswaSelect.disabled = false;
                     berkasInput.disabled = false;
                     daftarButton.disabled = false;
                 }
             };
 
-            // Panggil fungsi checkIPK saat halaman dimuat dan setiap kali IPK diubah
             ipkInput.addEventListener('input', checkIPK);
             checkIPK(); // Panggil fungsi saat halaman pertama kali dimuat
         });

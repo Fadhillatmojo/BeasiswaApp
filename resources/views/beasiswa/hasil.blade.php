@@ -41,7 +41,7 @@
                             <td>{{ $pendaftaran->beasiswa ?? '-' }}</td>
                             <td>
                                 @if($pendaftaran->berkas)
-                                    <a href="{{ Storage::url($pendaftaran->berkas) }}" target="_blank">Lihat Berkas</a>
+                                    <a href="{{ asset('storage/berkas/' . $pendaftaran->berkas) }}" alt="{{ $pendaftaran->berkas }} }}" target="_blank">Lihat Berkas</a>
                                 @else
                                     Tidak Ada Berkas
                                 @endif
